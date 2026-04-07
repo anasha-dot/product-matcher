@@ -1,0 +1,86 @@
+[
+  {"name": "Samsung Galaxy S23 256GB Black", "price": 3190, "seller": "StoreA", "currency": "ILS"},
+  {"name": "Samsung S23 256 GB black", "price": 3250, "seller": "StoreB", "currency": "ILS"},
+  {"name": "سامسونج جالكسي S23 256GB اسود", "price": 3150, "seller": "StoreC", "currency": "ILS"},
+  {"name": "סמסונג גלקסי S23 256GB שחור", "price": 3180, "seller": "StoreD", "currency": "ILS"},
+
+  {"name": "Samsung Galaxy S23 128GB Black", "price": 2890, "seller": "StoreA", "currency": "ILS"},
+  {"name": "سامسونج جالكسي S23 128GB اسود", "price": 2950, "seller": "StoreC", "currency": "ILS"},
+  {"name": "סמסונג גלקסי S23 128GB שחור", "price": 2920, "seller": "StoreD", "currency": "ILS"},
+
+  {"name": "Samsung Galaxy S23 Ultra 256GB", "price": 4490, "seller": "StoreA", "currency": "ILS"},
+  {"name": "Samsung S23 Ultra 256GB", "price": 4550, "seller": "StoreB", "currency": "ILS"},
+  {"name": "סמסונג גלקסי S23 אולטרה 256GB", "price": 4420, "seller": "StoreD", "currency": "ILS"},
+  {"name": "سامسونج جالكسي S23 الترا 256GB", "price": 4470, "seller": "StoreC", "currency": "ILS"},
+
+  {"name": "Apple iPhone 15 Pro 128GB Titanium", "price": 4690, "seller": "iShop", "currency": "ILS"},
+  {"name": "iPhone 15 Pro 128 GB", "price": 4750, "seller": "MobileX", "currency": "ILS"},
+  {"name": "אייפון 15 פרו 128GB טיטניום", "price": 4650, "seller": "iShop", "currency": "ILS"},
+  {"name": "ايفون 15 برو 128GB تيتانيوم", "price": 4720, "seller": "ArabStore", "currency": "ILS"},
+
+  {"name": "Apple iPhone 15 Pro 256GB", "price": 4990, "seller": "iShop", "currency": "ILS"},
+  {"name": "ايفون 15 برو 256GB", "price": 4930, "seller": "ArabStore", "currency": "ILS"},
+
+  {"name": "Xiaomi Redmi Note 13 Pro 256GB", "price": 1450, "seller": "XStore", "currency": "ILS"},
+  {"name": "شاومي ريدمي نوت 13 برو 256GB", "price": 1390, "seller": "ArabStore", "currency": "ILS"},
+  {"name": "שיאומי רדמי נוט 13 פרו 256GB", "price": 1420, "seller": "HebStore", "currency": "ILS"},
+  {"name": "Xiaome Redme Note13 Pro 256 GB", "price": 1470, "seller": "CheapPhones", "currency": "ILS"},
+
+  {"name": "Google Pixel 8 128GB", "price": 2690, "seller": "GShop", "currency": "ILS"},
+  {"name": "גוגל פיקסל 8 128GB", "price": 2650, "seller": "HebStore", "currency": "ILS"},
+  {"name": "بيكسل 8 128GB", "price": 2710, "seller": "ArabStore", "currency": "ILS"},
+
+  {"name": "Sony WH-1000XM5 Black", "price": 1390, "seller": "AudioMax", "currency": "ILS"},
+  {"name": "Sony WH1000XM5 black", "price": 1350, "seller": "SoundHub", "currency": "ILS"},
+  {"name": "סוני WH-1000XM5 שחור", "price": 1370, "seller": "HebStore", "currency": "ILS"},
+  {"name": "سوني WH-1000XM5 اسود", "price": 1410, "seller": "ArabStore", "currency": "ILS"},
+
+  {"name": "Sony WH-1000XM4 Black", "price": 1090, "seller": "AudioMax", "currency": "ILS"},
+  {"name": "Sony WH1000XM4 Black", "price": 1120, "seller": "SoundHub", "currency": "ILS"},
+
+  {"name": "Apple AirPods Pro 2nd Gen", "price": 890, "seller": "iShop", "currency": "ILS"},
+  {"name": "AirPods Pro (2nd generation)", "price": 920, "seller": "MobileX", "currency": "ILS"},
+  {"name": "איירפודס פרו דור 2", "price": 885, "seller": "HebStore", "currency": "ILS"},
+
+  {"name": "Dell XPS 15 16GB 512GB SSD", "price": 5200, "seller": "LaptopPro", "currency": "ILS"},
+  {"name": "Dell XPS15 16GB 512GB", "price": 5100, "seller": "DealPC", "currency": "ILS"},
+  {"name": "DELL XPS 15 16 GB 512 GB", "price": 5150, "seller": "LaptopPro", "currency": "ILS"},
+
+  {"name": "Dell XPS 15 32GB 1TB SSD", "price": 6790, "seller": "LaptopPro", "currency": "ILS"},
+  {"name": "Dell XPS 15 32GB 1024GB", "price": 6850, "seller": "DealPC", "currency": "ILS"},
+
+  {"name": "Lenovo ThinkPad X1 Carbon Gen 12 16GB 512GB", "price": 6990, "seller": "LaptopPro", "currency": "ILS"},
+  {"name": "Lenovo Thinkpad X1 Carbon G12 16 GB 512 GB", "price": 6890, "seller": "DealPC", "currency": "ILS"},
+
+  {"name": "HP Spectre x360 14 16GB 1TB", "price": 7290, "seller": "LaptopPro", "currency": "ILS"},
+  {"name": "HP Spectre X360 14 16 GB 1024 GB", "price": 7190, "seller": "DealPC", "currency": "ILS"},
+
+  {"name": "LG OLED C3 55 inch TV", "price": 5990, "seller": "TVStore", "currency": "ILS"},
+  {"name": "LG OLED55C3 55\" TV", "price": 5850, "seller": "DealTV", "currency": "ILS"},
+  {"name": "אל ג'י OLED C3 55 אינץ", "price": 5920, "seller": "HebStore", "currency": "ILS"},
+
+  {"name": "Samsung QLED Q80C 65 inch", "price": 5290, "seller": "TVStore", "currency": "ILS"},
+  {"name": "Samsung Q80C 65\" QLED", "price": 5190, "seller": "DealTV", "currency": "ILS"},
+
+  {"name": "Nintendo Switch OLED White", "price": 1290, "seller": "GameShop", "currency": "ILS"},
+  {"name": "Nintendo Switch Oled white", "price": 1270, "seller": "DealGames", "currency": "ILS"},
+  {"name": "נינטנדו סוויץ' OLED לבן", "price": 1280, "seller": "HebStore", "currency": "ILS"},
+
+  {"name": "PlayStation 5 Slim Disc", "price": 2190, "seller": "GameShop", "currency": "ILS"},
+  {"name": "PS5 Slim Disc Edition", "price": 2250, "seller": "DealGames", "currency": "ILS"},
+
+  {"name": "Seagate Expansion 2TB USB 3.0", "price": 265, "seller": "StorageHub", "currency": "ILS"},
+  {"name": "Seagate Expansion 2048GB", "price": 255, "seller": "DealPC", "currency": "ILS"},
+
+  {"name": "Apple MacBook Air M2 8GB 256GB", "price": 3990, "seller": "iShop", "currency": "ILS"},
+  {"name": "Macbook Air M2 8 GB 256 GB", "price": 3890, "seller": "DealPC", "currency": "ILS"},
+
+  {"name": "Apple MacBook Air M2 16GB 512GB", "price": 5290, "seller": "iShop", "currency": "ILS"},
+  {"name": "MacBook Air M2 16GB 512GB", "price": 5190, "seller": "DealPC", "currency": "ILS"},
+
+  {"name": "Logitech MX Master 3S Mouse", "price": 399, "seller": "OfficeStore", "currency": "ILS"},
+  {"name": "Logitech MX Master 3 S", "price": 379, "seller": "DealOffice", "currency": "ILS"},
+
+  {"name": "Canon EOS R10 Body", "price": 3190, "seller": "CamShop", "currency": "ILS"},
+  {"name": "Canon Eos R10 (Body Only)", "price": 3090, "seller": "DealCam", "currency": "ILS"}
+]

@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+
+# local caches
+.embedding_cache.sqlite3
+
+# outputs (generated)
+matched_products.json
+review_pairs.json
+wide_matched.json
+wide_reviews.json
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
