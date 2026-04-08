@@ -7,8 +7,8 @@ Contains:
 - MatcherConfig dataclass with all tunable thresholds and weights
 
 This is the **general-purpose** version: no domain-specific brand aliases,
-stopwords, or phone-specific constants.  Feature extraction is handled by
-the LLM extractor or left to fuzzy + semantic similarity.
+stopwords, or phone-specific constants.  Feature extraction is left to
+fuzzy + semantic similarity, with an optional LLM resolver for uncertain pairs.
 """
 from __future__ import annotations
 
@@ -69,10 +69,6 @@ class MatcherConfig:
 
     # Blocking
     max_bucket_size: int = 200
-
-    # LLM feature extraction (general-purpose, replaces hardcoded constants)
-    llm_extract: bool = False
-    llm_extract_model: str = "gpt-4o-mini"
 
     # LLM fallback for uncertain pairs
     llm_resolve: bool = False

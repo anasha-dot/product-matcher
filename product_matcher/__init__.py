@@ -21,15 +21,12 @@ Quick start (CLI)::
     python -m product_matcher --input products.csv --output results.json
 """
 from .config import MatcherConfig
-from .llm_extractor import LLMExtractor, LLMExtractorConfig
 from .llm_resolver import LLMResolver, LLMResolverConfig
 from .matcher import ProductMatcher
 from .models import PairDecision, ProductRecord
 
 __all__ = [
     "MatcherConfig",
-    "LLMExtractor",
-    "LLMExtractorConfig",
     "LLMResolver",
     "LLMResolverConfig",
     "ProductMatcher",

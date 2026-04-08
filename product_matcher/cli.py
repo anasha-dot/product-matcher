@@ -5,7 +5,7 @@ Command-line interface for the product matcher.
 
 Contains:
 - build_arg_parser()  – defines all CLI flags (input, output, column names,
-                        thresholds, semantic backend, LLM extraction, demo, etc.)
+                        thresholds, semantic backend, LLM resolution, demo, etc.)
 - main()              – parses arguments, runs the matcher, and writes output
 """
 from __future__ import annotations
@@ -59,14 +59,12 @@ def build_arg_parser() -> argparse.ArgumentParser:
     tuning.add_argument("--review-threshold", type=float, default=0.68)
 
     llm = parser.add_argument_group("LLM features")
-    llm.add_argument("--llm-extract", action="store_true",
-                     help="Use LLM to extract structured fields (brand, model, specs) from product names.")
     llm.add_argument("--llm-resolve", action="store_true",
                      help="Send uncertain pairs to an LLM for automatic resolution.")
     llm.add_argument("--llm-api-key", default=None,
                      help="OpenAI API key (or set OPENAI_API_KEY env var).")
     llm.add_argument("--llm-model", default="gpt-4o-mini",
-                     help="OpenAI model to use for extraction and resolution.")
+                     help="OpenAI model to use for resolution.")
     llm.add_argument("--llm-max-pairs", type=int, default=50,
                      help="Max number of uncertain pairs to send to the LLM resolver.")
 
@@ -83,10 +81,14 @@ def main() -> None:
 
     args = build_arg_parser().parse_args()
 
+    # This code determines how the input DataFrame 'frame' is prepared for product matching:
+    # - If the user specifies the --demo flag, it loads a built-in sample dataset into a DataFrame.
+    # - Else, if the user provides an input file path via --input, it loads that file into a DataFrame using load_input.
     if args.demo:
         frame = pd.DataFrame(SAMPLE_DATA)
     elif args.input:
         frame = load_input(args.input)
+ 
     else:
         print("Error: provide --input <file> or use --demo.", file=sys.stderr)
         raise SystemExit(1)
@@ -108,8 +110,6 @@ def main() -> None:
         local_model_name=args.local_model,
         match_threshold=args.match_threshold,
         review_threshold=args.review_threshold,
-        llm_extract=args.llm_extract,
-        llm_extract_model=args.llm_model,
         llm_resolve=args.llm_resolve,
         llm_api_key=args.llm_api_key,
         llm_model=args.llm_model,
