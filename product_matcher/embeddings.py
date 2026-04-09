@@ -1,13 +1,12 @@
 """
 embeddings.py
 -------------
-Semantic similarity backends used to compare product names beyond exact tokens.
+Semantic similarity backend for comparing product names across languages.
 
 Contains:
-- EmbeddingCache         – SQLite-backed cache so embeddings are computed once
-- SemanticSimilarity     – abstract base class
-- TfidfSemanticSimilarity            – character n-gram TF-IDF fallback
-- LocalEmbeddingSemanticSimilarity   – sentence-transformers model (multilingual)
+- EmbeddingCache                       – SQLite-backed cache so embeddings are computed once
+- SemanticSimilarity                   – abstract base class
+- LocalEmbeddingSemanticSimilarity     – sentence-transformers model (multilingual)
 """
 from __future__ import annotations
 
@@ -17,8 +16,6 @@ import sqlite3
 from typing import List, Optional, Sequence
 
 import numpy as np
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
 
 try:
     from sentence_transformers import SentenceTransformer
@@ -81,29 +78,6 @@ class SemanticSimilarity:
 
 
 # ---------------------------------------------------------------------------
-# TF-IDF backend (no external model required)
-# ---------------------------------------------------------------------------
-
-class TfidfSemanticSimilarity(SemanticSimilarity):
-    """Character n-gram TF-IDF cosine similarity – lightweight fallback."""
-
-    def __init__(self) -> None:
-        self.vectorizer = TfidfVectorizer(
-            analyzer="char_wb", ngram_range=(3, 5), min_df=1,
-        )
-        self.matrix = None
-
-    def fit(self, texts: Sequence[str]) -> None:
-        self.matrix = self.vectorizer.fit_transform(texts)
-
-    def similarity(self, a_index: int, b_index: int) -> float:
-        if self.matrix is None:
-            return 0.0
-        value = cosine_similarity(self.matrix[a_index], self.matrix[b_index])[0, 0]
-        return float(max(0.0, min(1.0, value)))
-
-
-# ---------------------------------------------------------------------------
 # Local sentence-transformers backend
 # ---------------------------------------------------------------------------
 
@@ -116,8 +90,8 @@ class LocalEmbeddingSemanticSimilarity(SemanticSimilarity):
     def __init__(self, model_name: str, cache_path: str) -> None:
         if SentenceTransformer is None:
             raise RuntimeError(
-                "sentence-transformers is not installed. "
-                "Install it or switch semantic_backend to 'tfidf'."
+                "sentence-transformers is required for multilingual matching. "
+                "Install it with: pip install sentence-transformers"
             )
         self.model_name = model_name
         self.model = SentenceTransformer(model_name)

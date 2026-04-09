@@ -7,8 +7,8 @@ Contains:
 - MatcherConfig dataclass with all tunable thresholds and weights
 
 This is the **general-purpose** version: no domain-specific brand aliases,
-stopwords, or phone-specific constants.  Feature extraction is left to
-fuzzy + semantic similarity, with an optional LLM resolver for uncertain pairs.
+stopwords, or phone-specific constants.  Feature extraction is handled by
+the LLM extractor (when enabled) or left to fuzzy + semantic similarity.
 """
 from __future__ import annotations
 
@@ -41,7 +41,6 @@ class MatcherConfig:
     # Matching behaviour
     match_mode: str = "exact"           # "exact" | "family"
     use_semantic: bool = True
-    semantic_backend: str = "local"     # "local" | "tfidf"
     local_model_name: str = DEFAULT_LOCAL_MODEL
     semantic_weight: float = 0.50
     semantic_match_threshold: float = 0.90
@@ -69,6 +68,10 @@ class MatcherConfig:
 
     # Blocking
     max_bucket_size: int = 200
+
+    # LLM feature extraction (general-purpose, replaces hardcoded constants)
+    llm_extract: bool = False
+    llm_extract_model: str = "gpt-4o-mini"
 
     # LLM fallback for uncertain pairs
     llm_resolve: bool = False

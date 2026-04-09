@@ -27,8 +27,8 @@ from .config import MatcherConfig
 from .embeddings import (
     LocalEmbeddingSemanticSimilarity,
     SemanticSimilarity,
-    TfidfSemanticSimilarity,
 )
+from .llm_extractor import LLMExtractor, LLMExtractorConfig
 from .llm_resolver import LLMResolver, LLMResolverConfig
 from .models import PairDecision, ProductRecord
 from .normalize import row_to_record
@@ -98,6 +98,24 @@ class ProductMatcher:
     def __init__(self, config: Optional[MatcherConfig] = None) -> None:
         self.config = config or MatcherConfig()
         self.semantic: Optional[SemanticSimilarity] = None
+        self._llm_extractor: Optional[LLMExtractor] = None
+
+    # ---- LLM extractor initialization ----
+
+    def _build_llm_extractor(self) -> Optional[LLMExtractor]:
+        cfg = self.config
+        if not cfg.llm_extract:
+            return None
+        try:
+            return LLMExtractor(LLMExtractorConfig(
+                enabled=True,
+                api_key=cfg.llm_api_key,
+                model=cfg.llm_extract_model,
+                cache_path=cfg.cache_path,
+            ))
+        except Exception as exc:
+            logger.warning("Could not initialise LLM extractor: %s", exc)
+            return None
 
     # ---- semantic backend initialization ----
 
@@ -106,22 +124,10 @@ class ProductMatcher:
             self.semantic = None
             return
 
-        if self.config.semantic_backend == "local":
-            try:
-                self.semantic = LocalEmbeddingSemanticSimilarity(
-                    model_name=self.config.local_model_name,
-                    cache_path=self.config.cache_path,
-                )
-                self.semantic.fit(texts)
-                return
-            except Exception as exc:
-                logger.warning(
-                    "Could not initialise local semantic model (%s). "
-                    "Falling back to TF-IDF.",
-                    exc,
-                )
-
-        self.semantic = TfidfSemanticSimilarity()
+        self.semantic = LocalEmbeddingSemanticSimilarity(
+            model_name=self.config.local_model_name,
+            cache_path=self.config.cache_path,
+        )
         self.semantic.fit(texts)
 
     # ---- record loading ----
@@ -134,9 +140,18 @@ class ProductMatcher:
 
         frame = frame.reset_index(drop=True)
 
+        # LLM extraction pass (if enabled)
+        llm_fields_list = None
+        self._llm_extractor = self._build_llm_extractor()
+        if self._llm_extractor is not None:
+            raw_names = [str(row[self.config.name_col]) for _, row in frame.iterrows()]
+            llm_fields_list = self._llm_extractor.extract_batch(raw_names)
+            logger.info("LLM extraction complete for %d products.", len(raw_names))
+
         records = []
         for idx, row in frame.iterrows():
-            records.append(row_to_record(row, idx, self.config))
+            llm_fields = llm_fields_list[idx] if llm_fields_list else None
+            records.append(row_to_record(row, idx, self.config, llm_fields=llm_fields))
 
         self._build_semantic_backend([r.normalized_name for r in records])
         return records
@@ -513,3 +528,5 @@ class ProductMatcher:
     def close(self) -> None:
         if self.semantic and hasattr(self.semantic, "close"):
             self.semantic.close()
+        if self._llm_extractor:
+            self._llm_extractor.close()

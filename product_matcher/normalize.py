@@ -17,7 +17,7 @@ from __future__ import annotations
 
 import re
 import unicodedata
-from typing import Optional, Set
+from typing import Any, Dict, Optional, Set
 
 import pandas as pd
 
@@ -197,16 +197,28 @@ def build_block_keys(
 
 
 # ---------------------------------------------------------------------------
-# Storage extraction from normalized text
+# Storage extraction from specs or normalized text
 # ---------------------------------------------------------------------------
 
 def _extract_storage_from_text(text: str) -> Optional[int]:
-    """Try to pull a storage value from normalised text."""
+    """Try to pull a storage value from normalised text as a fallback."""
     match = re.search(r"\b(\d+)gb\b", text)
     if match:
         val = int(match.group(1))
         if val in {16, 32, 64, 128, 256, 512, 1024, 2048}:
             return val
+    return None
+
+
+def _storage_from_specs(specs: Dict[str, str]) -> Optional[int]:
+    """Pull storage_gb from the specs dict if present."""
+    raw = specs.get("storage", "")
+    match = re.search(r"(\d+)\s*gb", raw)
+    if match:
+        return int(match.group(1))
+    match = re.search(r"(\d+)\s*tb", raw)
+    if match:
+        return int(match.group(1)) * 1024
     return None
 
 
@@ -218,8 +230,14 @@ def row_to_record(
     row: pd.Series,
     index: int,
     config: MatcherConfig,
+    llm_fields: Optional[Dict[str, Any]] = None,
 ) -> ProductRecord:
-    """Convert a single DataFrame row into a ProductRecord."""
+    """Convert a single DataFrame row into an enriched ProductRecord.
+
+    If *llm_fields* is provided (from LLMExtractor), those are used for brand,
+    model, variant, specs, and category.  Otherwise those fields are None and
+    the matcher relies on fuzzy + semantic similarity.
+    """
     raw_name = str(row[config.name_col])
     normalized = normalize_name(raw_name)
     price = float(row[config.price_col])
@@ -244,12 +262,28 @@ def row_to_record(
     mpn = get_optional_identifier(row, config.mpn_col, digits_only=False)
     sku = get_optional_identifier(row, config.sku_col, digits_only=False)
 
-    storage_gb = _extract_storage_from_text(normalized)
+    if llm_fields:
+        brand = llm_fields.get("brand")
+        model = llm_fields.get("model")
+        variant = llm_fields.get("variant")
+        specs = llm_fields.get("specs") or {}
+        category = llm_fields.get("category")
+        color = specs.get("color")
+        storage_gb = _storage_from_specs(specs) or _extract_storage_from_text(normalized)
+    else:
+        brand = None
+        model = None
+        variant = None
+        specs = {}
+        category = None
+        color = None
+        storage_gb = _extract_storage_from_text(normalized)
 
     tokens = get_tokens(normalized)
     block_keys = build_block_keys(
-        normalized, None, None, tokens,
+        normalized, brand, model, tokens,
         trade_id=trade_id, mpn=mpn, sku=sku, seller=seller,
+        category=category,
     )
 
     return ProductRecord(
@@ -260,7 +294,13 @@ def row_to_record(
         seller=seller,
         product_id=product_id,
         currency=currency,
+        brand=brand,
+        model=model,
+        variant=variant,
         storage_gb=storage_gb,
+        color=color,
+        category=category,
+        specs=specs,
         trade_id=trade_id,
         mpn=mpn,
         sku=sku,

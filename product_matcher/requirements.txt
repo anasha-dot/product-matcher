@@ -1,6 +1,5 @@
 numpy
 pandas
 rapidfuzz
-scikit-learn
 sentence-transformers
 openai

@@ -52,19 +52,22 @@ def build_arg_parser() -> argparse.ArgumentParser:
 
     tuning = parser.add_argument_group("tuning")
     tuning.add_argument("--mode", choices=["exact", "family"], default="exact")
-    tuning.add_argument("--semantic-backend", choices=["local", "tfidf"], default="local")
     tuning.add_argument("--disable-semantic", action="store_true")
     tuning.add_argument("--local-model", default=DEFAULT_LOCAL_MODEL)
     tuning.add_argument("--match-threshold", type=float, default=0.82)
     tuning.add_argument("--review-threshold", type=float, default=0.68)
 
     llm = parser.add_argument_group("LLM features")
+    llm.add_argument("--llm-extract", action="store_true",
+                     help="Use LLM to extract brand/model/variant/specs from product names.")
     llm.add_argument("--llm-resolve", action="store_true",
                      help="Send uncertain pairs to an LLM for automatic resolution.")
     llm.add_argument("--llm-api-key", default=None,
                      help="OpenAI API key (or set OPENAI_API_KEY env var).")
     llm.add_argument("--llm-model", default="gpt-4o-mini",
                      help="OpenAI model to use for resolution.")
+    llm.add_argument("--llm-extract-model", default="gpt-4o-mini",
+                     help="OpenAI model to use for feature extraction.")
     llm.add_argument("--llm-max-pairs", type=int, default=50,
                      help="Max number of uncertain pairs to send to the LLM resolver.")
 
@@ -106,10 +109,11 @@ def main() -> None:
         sku_col=args.sku_col,
         match_mode=args.mode,
         use_semantic=not args.disable_semantic,
-        semantic_backend=args.semantic_backend,
         local_model_name=args.local_model,
         match_threshold=args.match_threshold,
         review_threshold=args.review_threshold,
+        llm_extract=args.llm_extract,
+        llm_extract_model=args.llm_extract_model,
         llm_resolve=args.llm_resolve,
         llm_api_key=args.llm_api_key,
         llm_model=args.llm_model,
